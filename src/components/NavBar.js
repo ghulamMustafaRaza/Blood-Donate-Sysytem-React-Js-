@@ -1,15 +1,15 @@
-import React,{Component} from 'react';
-import {AppBar, FlatButton} from 'material-ui';
+import React,{PureComponent} from 'react';
+import {AppBar, FlatButton, CircularProgress} from 'material-ui';
 import {Link} from 'react-router-dom'
 import * as firebase from 'firebase'
 
-class Logged extends React.PureComponent{
+class Logged extends PureComponent{
     static muiName = 'FlatButton'
     render(){
         return(
             <div>
-                <Link to="/" ><FlatButton  {...this.props} label="Home"/></Link>
-                <Link to="/user" ><FlatButton  {...this.props} label="Profile"/></Link>
+                <Link to="/" ><FlatButton  {...this.props} label="Donors"/></Link>
+                <Link to="/user" ><FlatButton  {...this.props} label="Update Your Profile"/></Link>
                 <FlatButton onClick={() => {
                         firebase.auth().signOut()
                 }} {...this.props} label="LogOut" />
@@ -23,9 +23,9 @@ class UnLogged extends React.PureComponent{
     render(){
         return(
             <div>
-                <Link to="/" ><FlatButton  {...this.props} label="Home"/></Link>
+                <Link to="/" ><FlatButton  {...this.props} label="Donors"/></Link>
                 <Link to="/signin" ><FlatButton  {...this.props} label="Login" /></Link>
-                <Link to="/signup" ><FlatButton  {...this.props} label="SignUp"/></Link>
+                <Link to="/signup" ><FlatButton  {...this.props} label="Register As A Donor"/></Link>
             </div>
         )
     }
@@ -56,12 +56,12 @@ class NavBar extends React.PureComponent{
         return(
             <div>
                 <AppBar
-                    style={{ position: "fixed", top: 0 }}
+                    style={{ position: "fixed", top: 0, left: 0, right: 0 }}
                     zDepth={1}
                     title="Blood App"
                     titleStyle={{cursor:'pointer'}}
                     iconElementLeft={<span></span>}
-                    iconElementRight={this.state.logged ? <Logged /> : <UnLogged />}
+                    iconElementRight={this.props.first ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', marginTop: -4 }}><CircularProgress color="white" size={30}/></span> :this.state.logged ? <Logged /> : <UnLogged />}
                 />
             </div>
         )

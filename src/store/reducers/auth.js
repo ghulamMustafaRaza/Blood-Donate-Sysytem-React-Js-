@@ -7,7 +7,7 @@ const initState = {
 }
 
 export const authReducer = (state = initState, action) => {
-  console.log('<In Reducer> ---', action)
+  // console.log('<In Reducer> ---', action)
   switch (action.type) {
     case AuthActions.LOGIN:
     case AuthActions.SIGNUP:
@@ -27,7 +27,7 @@ export const authReducer = (state = initState, action) => {
       case AuthActions.SET_USER:
       return { ...state, ...action.payload }
     case AuthActions.AFTER_TEST_HELLO:
-      console.log("In PatientActions. After Test hello", action.payload)
+      // console.log("In PatientActions. After Test hello", action.payload)
       return { ...state, data: action.payload }
     default:
       return state

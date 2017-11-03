@@ -29,7 +29,7 @@ export default class Signin extends React.PureComponent{
     handleSubmit(e){
         e.preventDefault()
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.pass).then(data=>{
-            console.log("Account created in")
+            // console.log("Account created in")
             firebase.auth().currentUser.updateProfile({
                 displayName: this.state.name
             })

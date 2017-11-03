@@ -1,7 +1,6 @@
 import React from 'react'
-import { RaisedButton, MenuItem } from 'material-ui'
+import { RaisedButton, MenuItem, FlatButton, Dialog } from 'material-ui'
 import Loader from './Loader'
-import * as firebase from 'firebase'
 import { ValidatorForm } from 'react-form-validator-core';
 import { TextValidator, SelectValidator, DateValidator } from 'react-material-ui-form-validator';
 
@@ -20,12 +19,12 @@ export default class User extends React.PureComponent {
       location,
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : {}
     }
-    console.log({
-      group,
-      name,
-      location,
-      dateOfBirth
-    }, props)
+    // console.log({
+    //   group,
+    //   name,
+    //   location,
+    //   dateOfBirth
+    // }, props)
 
   }
   componentWillReciveProps(nextProps) {
@@ -41,17 +40,17 @@ export default class User extends React.PureComponent {
       location,
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : {}
     })
-    console.log({
-      group,
-      name,
-      location,
-      dateOfBirth
-    })
+    // console.log({
+    //   group,
+    //   name,
+    //   location,
+    //   dateOfBirth
+    // })
   }
   handleSubmit = (e) => {
     e.preventDefault()
     if (!this.check()) {
-      this.props.updateProfile(this.state)
+      this.handleOpen()
     }
   }
   handleChangeM = (a) => (ev, date, value) => {
@@ -59,18 +58,48 @@ export default class User extends React.PureComponent {
       [a]: value || date || ev.target.value
     })
   }
+
+  handleOpen = () => {
+    this.open = true;
+    this.forceUpdate();
+  };
+
+  handleClose = () => {
+    this.open = false;
+    this.forceUpdate();
+  };
+  modalSubmit = () => {
+    this.handleClose()
+    this.props.updateProfile(this.state)    
+  }
   check = () => {
     let a = this.state
     let b = this.props.user
     b.dateOfBirth = b.dateOfBirth ? new Date(b.dateOfBirth) : new Date()
+    a.dateOfBirth = a.dateOfBirth ? new Date(a.dateOfBirth) : new Date()
     return a.name === b.name && a.location === b.location && a.group === b.group && a.dateOfBirth.toLocaleDateString() === b.dateOfBirth.toLocaleDateString()
   }
+  open = false
   render() {
+    const actions = [
+      <FlatButton
+        label="No"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <RaisedButton
+        label="Yes"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.modalSubmit}
+      />,
+    ];
     return (
       this.props.updateIsLoading || this.props.isLoading ?
         <Loader fullpage={true} />
         :
         <ValidatorForm onSubmit={this.handleSubmit} className="login">
+          <h3>Update Your Profile</h3>
           <TextValidator
             value={this.state.name}
             floatingLabelText="Name"
@@ -95,11 +124,7 @@ export default class User extends React.PureComponent {
             onChange={this.handleChangeM('group')}
             value={this.state.group}
           >
-            <MenuItem value="A+" primaryText="A+" />
-            <MenuItem value="B+" primaryText="B+" />
-            <MenuItem value="C+" primaryText="C+" />
-            <MenuItem value="D+" primaryText="D+" />
-            <MenuItem value="E+" primaryText="E+" />
+            {this.props.blood['blood-groups'].map((a) => <MenuItem key={a} value={a} primaryText={a} />)}
           </SelectValidator>
           <DateValidator
             autoOk
@@ -112,6 +137,14 @@ export default class User extends React.PureComponent {
           ></DateValidator>
           {this.props.updateError && this.props.updateError}
           <RaisedButton disabled={this.check()} label="Update Profile" primary={true} type="submit" />
+          <Dialog
+            title="Dialog With Actions"
+            actions={actions}
+            modal={false}
+            open={this.open}
+          >
+            Are You Sure To Update Your Profile
+          </Dialog>
         </ValidatorForm>
     )
   }

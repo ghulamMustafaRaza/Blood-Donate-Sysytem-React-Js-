@@ -1,7 +1,5 @@
 
 export class DonorActions {
-    constructor() { }
-
     static I = 'I'
 
     static LOAD_DONORS = 'LOAD_DONORS'
@@ -15,6 +13,7 @@ Object.keys(DonorActions).map(a => {
     let b = a.split('_').map(a => a.charAt(0).toUpperCase() + a.slice(1).toLowerCase()).join('')
     b = b.charAt(0).toLowerCase() + b.slice(1)
     DonorActions[b] = payload => ({ type: a, payload })
+    return a
 })
 // testHelloWorld = () => {
 //     return({

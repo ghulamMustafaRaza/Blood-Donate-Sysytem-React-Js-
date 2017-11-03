@@ -1,6 +1,5 @@
 
 export class AuthActions {
-    constructor() { }
     static SET_USER = 'SET_USER'
     static UPDATE_PROFILE = 'UPDATE_PROFILE'
     static UPDATE_PROFILE_FULL_FILL = 'UPDATE_PROFILE_FULL_FILL'
@@ -22,4 +21,5 @@ Object.keys(AuthActions).map(a => {
     let b = a.split('_').map(a => a.charAt(0).toUpperCase() + a.slice(1).toLowerCase()).join('')
     b = b.charAt(0).toLowerCase() + b.slice(1)
     AuthActions[b] = payload => ({ type: a, payload })
+    return a
 })

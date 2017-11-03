@@ -6,7 +6,7 @@ const initState = {
 }
 
 export const donorReducer = (state = initState, action) => {
-  console.log('<In Reducer> ---', action)
+  // console.log('<In Reducer> ---', action)
   switch (action.type) {
     case DonorActions.LOAD_DONORS:
       return { ...state, isLoading: true }
@@ -15,7 +15,7 @@ export const donorReducer = (state = initState, action) => {
     case DonorActions.LOAD_DONORS_FULL_FILL:
       return { ...state, isLoading: false, ...action.payload }
     case DonorActions.AFTER_TEST_HELLO:
-      console.log("In PatientActions. After Test hello", action.payload)
+      // console.log("In PatientActions. After Test hello", action.payload)
       return { ...state, data: action.payload }
     default:
       return state

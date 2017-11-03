@@ -6,7 +6,6 @@ import 'rxjs/add/observable/throw';
 import { database } from 'firebase'
 
 export class DonorEpics {
-    constructor() { }
     static testHello = (action$) =>
         action$.ofType(DonorActions.TEST_HELLO)
             .switchMap(({ payload }) => Observable.of({ type: DonorActions.AFTER_TEST_HELLO, payload: { data: "After test" } }));
@@ -17,4 +16,4 @@ export class DonorEpics {
                 raw: a.val()
             }))).catch(e => Observable.of(DonorActions.loadDonorsFail(e))));
 }
-console.log(DonorActions.loadDonorsFullFill(''))
+// console.log(DonorActions.loadDonorsFullFill(''))

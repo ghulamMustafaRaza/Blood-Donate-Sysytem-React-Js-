@@ -1,11 +1,10 @@
 import React from 'react'
 import { RaisedButton } from 'material-ui'
 import Loader from './Loader'
-import * as firebase from 'firebase'
 import { ValidatorForm } from 'react-form-validator-core';
 import { TextValidator } from 'react-material-ui-form-validator';
 
-export default class Signin extends React.PureComponent {
+export default class Signin extends React.Component {
     constructor(props) {
         super(props)
         this.state = {

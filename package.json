@@ -1,5 +1,5 @@
 {
-  "name": "anwar-ul-quran-it-lab",
+  "name": "Blood-App",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,8 +17,7 @@
     "redux-logger": "^3.0.6",
     "redux-observable": "^0.17.0",
     "request": "^2.83.0",
-    "rxjs": "^5.5.2",
-    "textbelt": "0.0.3"
+    "rxjs": "^5.5.2"
   },
   "scripts": {
     "start": "react-scripts start",

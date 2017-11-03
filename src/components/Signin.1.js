@@ -31,7 +31,7 @@ export default class Signin extends React.PureComponent {
     handleSubmit(e) {
         e.preventDefault()
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.pass).then(data => {
-            console.log("logged in")
+            // console.log("logged in")
         }).catch(function (error) {
             alert(error.message)
         });

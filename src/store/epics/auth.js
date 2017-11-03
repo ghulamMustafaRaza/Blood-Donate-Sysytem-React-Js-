@@ -1,12 +1,11 @@
 import { AuthActions } from '../actions'
-import { Observable } from "rxjs"
+// import { Observable } from "rxjs"
 import 'rxjs/observable/dom/ajax';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { database, auth } from 'firebase';
-import store from '../'
+// import store from '../'
 export class AuthEpics {
-    constructor() { }
     static login = (action$) =>
         action$.ofType(AuthActions.LOGIN)
             .switchMap(({ payload }) =>

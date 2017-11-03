@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import NavBar from './NavBar';
 import Signin from './Signin';
 import Signup from './Signup';
@@ -9,10 +9,9 @@ import Home from './Home';
 import Detail from './Detail';
 import firebase from 'firebase';
 import { connect } from 'react-redux'
-import store from '../store'
 import { AuthActions } from '../store/actions'
 
-class App extends React.PureComponent {
+class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,14 +22,14 @@ class App extends React.PureComponent {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(a => {
             this.history.listen(a => a.path === '/user' && !a ? this.setState({ to: '/signin' }) : (a.path === '/signin' || a.path === '/signup') && !a ? this.setState({ to: '/user' }) : null)
-            console.log(a, this.refs.a)
+            // console.log(a, this.refs.a)
             if (a) {
                 this.setState({ to: '/user' })
                 firebase.database().ref('users/' + a.uid).once('value').then(b => this.props.dispatchs.setUser({user: b.val(), authUser: a}))
                 return
             }
             this.setState({ to: '/' })
-            this.props.setUser({user: null, authUser: null})
+            this.props.dispatchs.setUser({user: {}, authUser: {}})
         })
     }
     path = '/'
@@ -38,21 +37,24 @@ class App extends React.PureComponent {
         this.history = props.history
         return <Component { ...componentProps } { ...props } />
     }} />
+    f = true
     render() {
         this.path !== this.state.to && this.history.push(this.state.to)
         this.path = this.state.to
         return (
             <Router>
                 <div>
+                    {/* {console.log(this.props.blood)} */}
                     <div style={{ display: 'none' }}>
                         {this.path !== this.state.to && <Redirect ref="a" to={this.state.to} />}
                         {this.path = this.state.to}
                     </div>
-                    <NavBar />
-                    <this.route exact path="/" componentProps={this.props.donor} Component={Home} />
-                    <this.route path="/signin" componentProps={{...this.props.auth, login: this.props.dispatchs.login}} Component={Signin} />
-                    <this.route path="/signup" componentProps={{...this.props.auth, ...this.props.donor, ...this.props.dispatchs}} Component={Signup} />
-                    <this.route path="/user" Component={User} componentProps={{...this.props.auth, ...this.props.donor, ...this.props.dispatchs}} />
+                    <NavBar first={this.f}/>
+                    {this.f = false}
+                    <this.route exact path="/" componentProps={{...this.props.donor, blood: this.props.blood}} Component={Home} />
+                    <this.route path="/signin" componentProps={{...this.props.auth, login: this.props.dispatchs.login, blood: this.props.blood}} Component={Signin} />
+                    <this.route path="/signup" componentProps={{...this.props.auth, ...this.props.donor, ...this.props.dispatchs, blood: this.props.blood}} Component={Signup} />
+                    <this.route path="/user" Component={User} componentProps={{...this.props.auth, ...this.props.donor, ...this.props.dispatchs, blood: this.props.blood}} />
                     <this.route path="/detail/:uid" componentProps={this.props.donor} Component={Detail} />
                 </div>
             </Router>
@@ -60,9 +62,10 @@ class App extends React.PureComponent {
     }
 }
 
-const mapStateToProps = ({donor, auth}) => ({
+const mapStateToProps = ({donor, auth, blood}) => ({
     donor,
-    auth
+    auth,
+    blood
 })
 const mapDispatchToProps = (dispatch) => ({
     dispatchs: {

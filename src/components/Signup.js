@@ -1,11 +1,10 @@
 import React from 'react'
 import { RaisedButton, MenuItem } from 'material-ui'
 import Loader from './Loader'
-import * as firebase from 'firebase'
 import { ValidatorForm } from 'react-form-validator-core';
 import { TextValidator, SelectValidator, DateValidator } from 'react-material-ui-form-validator';
 
-export default class Signin extends React.PureComponent {
+export default class Signin extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -75,11 +74,7 @@ export default class Signin extends React.PureComponent {
                         onChange={this.handleChangeM('group')}
                         value={this.state.group}
                     >
-                        <MenuItem value="A+" primaryText="A+" />
-                        <MenuItem value="B+" primaryText="B+" />
-                        <MenuItem value="C+" primaryText="C+" />
-                        <MenuItem value="D+" primaryText="D+" />
-                        <MenuItem value="E+" primaryText="E+" />
+                    {this.props.blood['blood-groups'].map((a) => <MenuItem key={a} value={a} primaryText={a} />)}
                     </SelectValidator>
                     <DateValidator
                         autoOk
