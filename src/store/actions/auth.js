@@ -2,6 +2,9 @@
 export class AuthActions {
     constructor() { }
     static SET_USER = 'SET_USER'
+    static UPDATE_PROFILE = 'UPDATE_PROFILE'
+    static UPDATE_PROFILE_FULL_FILL = 'UPDATE_PROFILE_FULL_FILL'
+    static UPDATE_PROFILE_FAIL = 'UPDATE_PROFILE_FAIL'
 
     static LOAD_USER = 'LOAD_USER'
     static LOAD_USER_FULL_FILL = 'LOAD_USER_FULL_FILL'

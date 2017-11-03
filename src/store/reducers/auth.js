@@ -18,6 +18,14 @@ export const authReducer = (state = initState, action) => {
     case AuthActions.LOGIN_FULL_FILL:
     case AuthActions.SIGNUP_FULL_FILL:
       return { ...state, isLoading: false, ...action.payload }
+    case AuthActions.UPDATE_PROFILE:
+      return { ...state, updateIsLoading: true, updateError: null }
+    case AuthActions.UPDATE_PROFILE_FAIL:
+      return { ...state, updateIsLoading: false, updateError: action.payload }
+    case AuthActions.UPDATE_PROFILE_FULL_FILL:
+      return { ...state, updateIsLoading: false, user: action.payload }
+      case AuthActions.SET_USER:
+      return { ...state, ...action.payload }
     case AuthActions.AFTER_TEST_HELLO:
       console.log("In PatientActions. After Test hello", action.payload)
       return { ...state, data: action.payload }

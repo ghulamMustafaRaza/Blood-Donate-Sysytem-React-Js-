@@ -1,7 +1,7 @@
 import { createEpicMiddleware, combineEpics } from "redux-observable";
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import logger from 'redux-logger';
-
+import blood from '../imports/blood.json'
 
 import { DonorActions, AuthActions } from './actions'
 import { donorReducer, authReducer } from './reducers'
@@ -12,6 +12,7 @@ const rootEpics = combineEpics(
     DonorEpics.fetchDonor,
     AuthEpics.login,
     AuthEpics.signup,
+    AuthEpics.updateProfile,
 )
 const epicMiddlerware = createEpicMiddleware(rootEpics);
 const rootReducer = combineReducers({
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
 })
 const store = createStore(
     rootReducer,
-    applyMiddleware(epicMiddlerware)
+    { blood },
+    applyMiddleware(epicMiddlerware, logger)
 )
 
 console.log('index store', store)

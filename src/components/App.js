@@ -22,14 +22,15 @@ class App extends React.PureComponent {
     history = {}
     componentDidMount() {
         firebase.auth().onAuthStateChanged(a => {
-
             this.history.listen(a => a.path === '/user' && !a ? this.setState({ to: '/signin' }) : (a.path === '/signin' || a.path === '/signup') && !a ? this.setState({ to: '/user' }) : null)
             console.log(a, this.refs.a)
             if (a) {
                 this.setState({ to: '/user' })
+                firebase.database().ref('users/' + a.uid).once('value').then(b => this.props.dispatchs.setUser({user: b.val(), authUser: a}))
                 return
             }
             this.setState({ to: '/' })
+            this.props.setUser({user: null, authUser: null})
         })
     }
     path = '/'
@@ -49,9 +50,9 @@ class App extends React.PureComponent {
                     </div>
                     <NavBar />
                     <this.route exact path="/" componentProps={this.props.donor} Component={Home} />
-                    <this.route path="/signin" componentProps={{...this.props.auth, login: this.props.login}} Component={Signin} />
-                    <this.route path="/signup" componentProps={{...this.props.auth, signup: this.props.signup}} Component={Signup} />
-                    <this.route path="/user" Component={User} componentProps={{...this.props.auth, ...this.props.donor}} />
+                    <this.route path="/signin" componentProps={{...this.props.auth, login: this.props.dispatchs.login}} Component={Signin} />
+                    <this.route path="/signup" componentProps={{...this.props.auth, ...this.props.donor, ...this.props.dispatchs}} Component={Signup} />
+                    <this.route path="/user" Component={User} componentProps={{...this.props.auth, ...this.props.donor, ...this.props.dispatchs}} />
                     <this.route path="/detail/:uid" componentProps={this.props.donor} Component={Detail} />
                 </div>
             </Router>
@@ -64,8 +65,12 @@ const mapStateToProps = ({donor, auth}) => ({
     auth
 })
 const mapDispatchToProps = (dispatch) => ({
-    login: (payload) => dispatch(AuthActions.login(payload)),
-    signup: (payload) => dispatch(AuthActions.signup(payload))
+    dispatchs: {
+        login: (payload) => dispatch(AuthActions.login(payload)),
+        setUser: (payload) => dispatch(AuthActions.setUser(payload)),
+        updateProfile: (payload) => dispatch(AuthActions.updateProfile(payload)),
+        signup: (payload) => dispatch(AuthActions.signup(payload))
+    }
 })
 
 

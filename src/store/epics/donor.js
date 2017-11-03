@@ -13,7 +13,7 @@ export class DonorEpics {
     static fetchDonor = (action$) =>
         action$.ofType(DonorActions.LOAD_DONORS)
             .switchMap(({ payload }) => database().ref('users').once('value').then(a => (DonorActions.loadDonorsFullFill({
-                donors: Object.keys(a.val()).map(i => ({ ...a.val()[i], key: i })),
+                donors: Object.keys(a.val()).map(i => ({ ...a.val()[i], key: i })).sort((a, b) => a.group.toUpperCase() < b.group.toUpperCase() ? -1 : a.group.toUpperCase() > b.group.toUpperCase() ? 1 : 0),
                 raw: a.val()
             }))).catch(e => Observable.of(DonorActions.loadDonorsFail(e))));
 }

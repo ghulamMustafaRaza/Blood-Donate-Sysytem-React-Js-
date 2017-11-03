@@ -39,4 +39,11 @@ export class AuthEpics {
                         .catch(e => AuthActions.signupFail(e.message))
                     ).catch(e => AuthActions.signupFail(e.message))
             )
+    static updateProfile = (action$) =>
+        action$.ofType(AuthActions.UPDATE_PROFILE)
+            .switchMap(({ payload }) =>
+                database().ref('users/' + auth().currentUser.uid).update(payload)
+                    .then(a => AuthActions.updateProfileFullFill(payload))
+                    .catch(e => AuthActions.updateProfileFail(e))
+            )
 }
