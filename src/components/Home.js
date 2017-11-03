@@ -28,6 +28,7 @@ export default class Home extends Component {
           <div
             style={{ padding: 10 }}>
             <h1>Find Donors</h1>
+            {/* <img src='/aa.gif' style={{ width: '100%' }} /> */}
             <SelectField
               floatingLabelText="Your Blood Group"
               onChange={this.onChange}
@@ -37,7 +38,10 @@ export default class Home extends Component {
               <MenuItem key={'all'} value={'all'} primaryText={'All'} />
               {this.props.blood['blood-groups'].map((a) => <MenuItem key={a} value={a} primaryText={a} />)}
             </SelectField>
-            {this.state.group !== 'all' && <h3>These Pepole Are Able to Donate App For { this.state.group } </h3>}
+            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+              {this.state.group !== 'all' && <h3>These Peoples Are Able to Donate App For "{ this.state.group }" By Following This Chart</h3>}
+              {this.state.group !== 'all' && <img src={require('../imports/aa.gif')} alt="Chart" style={{ width: '100%', maxWidth: 400, margin: '0 auto' }} />}  
+            </div>
           </div>
           <List>
             {this.arr().map((a, i) => (

@@ -2,9 +2,11 @@
   "name": "Blood-App",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ghulamMustafaRaza.github.io/Blood-Donate-Sysytem-React-Js-",
   "dependencies": {
     "clockwork": "^0.1.4",
     "firebase": "^4.6.0",
+    "gh-pages": "^1.0.0",
     "material-ui": "^0.19.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -20,6 +22,8 @@
     "rxjs": "^5.5.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

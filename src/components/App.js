@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom'
 import NavBar from './NavBar';
 import Signin from './Signin';
 import Signup from './Signup';
@@ -42,7 +42,7 @@ class App extends Component {
         this.path !== this.state.to && this.history.push(this.state.to)
         this.path = this.state.to
         return (
-            <Router>
+            <Router >
                 <div>
                     {/* {console.log(this.props.blood)} */}
                     <div style={{ display: 'none' }}>
