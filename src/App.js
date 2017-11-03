@@ -8,7 +8,7 @@ import {
   Link
 } from 'react-router-dom'
 
-class App extends Component {
+class App extends React.PureComponent {
   render() {
     return (
       <div>

@@ -3,7 +3,7 @@ import {AppBar, FlatButton} from 'material-ui';
 import {Link} from 'react-router-dom'
 import * as firebase from 'firebase'
 
-class Logged extends Component{
+class Logged extends React.PureComponent{
     static muiName = 'FlatButton'
     render(){
         return(
@@ -18,7 +18,7 @@ class Logged extends Component{
     }
 }
 
-class UnLogged extends Component{
+class UnLogged extends React.PureComponent{
     static muiName = 'FlatButton'
     render(){
         return(
@@ -30,7 +30,7 @@ class UnLogged extends Component{
         )
     }
 }
-class NavBar extends Component{
+class NavBar extends React.PureComponent{
     constructor(props){
         super(props)
         this.state = {

@@ -4,7 +4,7 @@ import { List, ListItem } from 'material-ui/List';
 import { IconButton } from 'material-ui'
 import ActionInfo from 'material-ui/svg-icons/action/info';
 
-export default class Home extends Component {
+export default class Home extends React.PureComponent {
   render() {
     return (
       this.props.isLoading ? <Loader fullpage /> :

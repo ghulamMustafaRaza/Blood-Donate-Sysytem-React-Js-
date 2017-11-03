@@ -1,20 +1,26 @@
 import { createEpicMiddleware, combineEpics } from "redux-observable";
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import logger from 'redux-logger';
 
 
-import { DonorActions } from './actions'
-import { donorReducer } from './reducers/patientReducer'
-import { DonorEpics } from './epics/index'
+import { DonorActions, AuthActions } from './actions'
+import { donorReducer, authReducer } from './reducers'
+import { DonorEpics, AuthEpics } from './epics'
 
 const rootEpics = combineEpics(
     DonorEpics.testHello,
     DonorEpics.fetchDonor,
+    AuthEpics.login,
+    AuthEpics.signup,
 )
 const epicMiddlerware = createEpicMiddleware(rootEpics);
+const rootReducer = combineReducers({
+    auth: authReducer,
+    donor: donorReducer
+})
 const store = createStore(
-    donorReducer,
-    applyMiddleware(epicMiddlerware, logger)
+    rootReducer,
+    applyMiddleware(epicMiddlerware)
 )
 
 console.log('index store', store)

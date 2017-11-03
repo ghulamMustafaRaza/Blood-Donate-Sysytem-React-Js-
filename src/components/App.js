@@ -10,8 +10,9 @@ import Detail from './Detail';
 import firebase from 'firebase';
 import { connect } from 'react-redux'
 import store from '../store'
+import { AuthActions } from '../store/actions'
 
-class App extends Component {
+class App extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -32,9 +33,9 @@ class App extends Component {
         })
     }
     path = '/'
-    route = ({ Component, path, ...routProps }) => <Route path={path} {...routProps} component={(props) => {
+    route = ({ Component, path, componentProps, ...routProps }) => <Route path={path} {...routProps} component={(props) => {
         this.history = props.history
-        return <Component { ...this.props } { ...props } />
+        return <Component { ...componentProps } { ...props } />
     }} />
     render() {
         this.path !== this.state.to && this.history.push(this.state.to)
@@ -47,23 +48,25 @@ class App extends Component {
                         {this.path = this.state.to}
                     </div>
                     <NavBar />
-                    <this.route exact path="/" Component={Home} />
-                    <this.route path="/signin" Component={Signin} />
-                    <this.route path="/signup" Component={Signup} />
-                    <this.route path="/user" Component={User} />
-                    <this.route path="/detail/:uid" Component={Detail} />
+                    <this.route exact path="/" componentProps={this.props.donor} Component={Home} />
+                    <this.route path="/signin" componentProps={{...this.props.auth, login: this.props.login}} Component={Signin} />
+                    <this.route path="/signup" componentProps={{...this.props.auth, signup: this.props.signup}} Component={Signup} />
+                    <this.route path="/user" Component={User} componentProps={{...this.props.auth, ...this.props.donor}} />
+                    <this.route path="/detail/:uid" componentProps={this.props.donor} Component={Detail} />
                 </div>
             </Router>
         )
     }
 }
 
-const mapStateToProps = ({donors, isLoading, raw}) => ({
-    donors,
-    isLoading,
-    raw
+const mapStateToProps = ({donor, auth}) => ({
+    donor,
+    auth
 })
-const mapDispatchToProps = (state) => ({})
+const mapDispatchToProps = (dispatch) => ({
+    login: (payload) => dispatch(AuthActions.login(payload)),
+    signup: (payload) => dispatch(AuthActions.signup(payload))
+})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

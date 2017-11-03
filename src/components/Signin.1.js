@@ -9,46 +9,68 @@ export default class Signin extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
+            user: null,
+            loading: true,
             email: '',
-            password: ''
+            pass: ''
         }
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
     componentDidMount() {
-    }
-    handleSubmit = (e) => {
-        e.preventDefault()
-        let { email, password } = this.state
-        this.props.login({email, password})
-    }
-    handleChangeM = (a) => (ev) => {
-        this.setState({
-            [a]: ev.target.value
+        firebase.auth().onAuthStateChanged(() => {
+            setTimeout(() => {
+                this.setState({
+                    user: firebase.auth().currentUser,
+                    loading: false
+                })
+                if (this.state.user) this.props.history.push('/user')
+            }, 5)
         })
+    }
+    handleSubmit(e) {
+        e.preventDefault()
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.pass).then(data => {
+            console.log("logged in")
+        }).catch(function (error) {
+            alert(error.message)
+        });
+    }
+    handleChange(ev) {
+        if (ev.target.name === "email") {
+            this.setState({
+                email: ev.target.value
+            })
+        }
+        else if (ev.target.name === "pass") {
+            this.setState({
+                pass: ev.target.value
+            })
+        }
     }
     render() {
         return (
-            this.props.isLoading ?
+            this.state.loading ?
                 <Loader fullpage={true} />
                 :
                 <ValidatorForm onSubmit={this.handleSubmit} className="login">
                     <TextValidator
                         value={this.state.email}
                         floatingLabelText="Email"
-                        onChange={this.handleChangeM('email')}
+                        onChange={this.handleChange}
                         name="email"
                         validators={['required', 'isEmail']}
                         errorMessages={['this field is required', 'email is not valid']}
                     />
                     <TextValidator
-                        value={this.state.password}
+                        value={this.state.pass}
                         floatingLabelText="Password"
-                        onChange={this.handleChangeM('password')}
+                        onChange={this.handleChange}
                         name="pass"
                         type="password"
                         validators={['required']}
                         errorMessages={['this field is required']}
                     />
-                    {this.props.error && this.props.error}
                     <RaisedButton label="Login" primary={true} type="submit" />
                     <RaisedButton label="Not A Account" onClick={() => {
                         this.props.history.push('/signup')

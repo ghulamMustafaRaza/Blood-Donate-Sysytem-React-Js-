@@ -3,7 +3,7 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import { FlatButton, Divider } from 'material-ui';
 import Loader from './Loader';
 
-export default class User extends Component {
+export default class User extends React.PureComponent {
   render() {
     return (
       this.props.isLoading ? <Loader fullpage /> :
